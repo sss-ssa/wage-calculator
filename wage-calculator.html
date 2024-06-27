@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wage Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        label, input, button {
+            display: block;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Wage Calculator</h1>
+        <form id="wageForm">
+            <label for="diamondIncome">Enter Diamond Income:</label>
+            <input type="number" id="diamondIncome" name="diamondIncome" required>
+            <label for="exchange">Enter Exchanged Diamonds:</label>
+            <input type="number" id="exchange" name="exchange" required>
+            <button type="button" onclick="calculateWage()">Calculate</button>
+        </form>
+        <h2>Results:</h2>
+        <p id="results"></p>
+    </div>
+    <script>
+        function calculateWage() {
+            const diamondIncome = parseInt(document.getElementById('diamondIncome').value);
+            const exchangedDiamonds = parseInt(document.getElementById('exchange').value);
+            let salary = 0, bonus = 0, cashout = 0, finalIncome = 0, coins = 0;
+
+            // Define the tiers
+            const tiers = [
+                {goal: 0, salary: 0, bonus: 0},
+                {goal: 10000, salary: 31, bonus: 0},
+                {goal: 20000, salary: 63, bonus: 0},
+                {goal: 30000, salary: 94, bonus: 0},
+                {goal: 50000, salary: 157, bonus: 0},
+                {goal: 70000, salary: 220, bonus: 0},
+                {goal: 100000, salary: 315, bonus: 35},
+                {goal: 200000, salary: 630, bonus: 70},
+                {goal: 300000, salary: 940, bonus: 110},
+                {goal: 500000, salary: 1570, bonus: 180},
+                {goal: 700000, salary: 2200, bonus: 250},
+                {goal: 1000000, salary: 2800, bonus: 360},
+                {goal: 1500000, salary: 4200, bonus: 540},
+                {goal: 2000000, salary: 5600, bonus: 720},
+                {goal: 3000000, salary: 8400, bonus: 1100},
+                {goal: 4000000, salary: 11000, bonus: 1450},
+                {goal: 5000000, salary: 14000, bonus: 1800},
+                {goal: 6000000, salary: 16700, bonus: 2170},
+                {goal: 8000000, salary: 22400, bonus: 2900},
+                {goal: 10000000, salary: 28000, bonus: 3600},
+                {goal: 12000000, salary: 33500, bonus: 4300},
+                {goal: 15000000, salary: 42000, bonus: 5400},
+                {goal: 18000000, salary: 50000, bonus: 6500},
+                {goal: 22000000, salary: 61500, bonus: 7900},
+                {goal: 28000000, salary: 78000, bonus: 10000},
+                {goal: 35000000, salary: 98000, bonus: 12600},
+                {goal: 45000000, salary: 125000, bonus: 16000},
+                {goal: 60000000, salary: 167000, bonus: 21700},
+                {goal: 80000000, salary: 223000, bonus: 29000},
+                {goal: 95000000, salary: 265000, bonus: 34400},
+                {goal: 125000000, salary: 349000, bonus: 45200},
+            ];
+
+            // Find the appropriate tier
+            for (let i = tiers.length - 1; i >= 0; i--) {
+                if (diamondIncome >= tiers[i].goal) {
+                    salary = tiers[i].salary;
+                    bonus = tiers[i].bonus;
+                    break;
+                }
+            }
+
+            // Calculate cashout considering exchanged diamonds
+            const netDiamonds = diamondIncome - exchangedDiamonds;
+            cashout = netDiamonds / 477;
+
+            // Calculate coins from exchanged diamonds
+            coins = exchangedDiamonds * 0.30;
+
+            // Calculate final income
+            finalIncome = salary + bonus + cashout;
+
+            // Display results
+            document.getElementById('results').innerHTML = `
+                Salary: $${salary.toFixed(2)}<br>
+                Bonus: $${bonus.toFixed(2)}<br>
+                Cashout: $${cashout.toFixed(2)}<br>
+                Coins: ${coins.toFixed(2)}<br>
+                Final Income: $${finalIncome.toFixed(2)}
+            `;
+        }
+    </script>
+</body>
+</html>
